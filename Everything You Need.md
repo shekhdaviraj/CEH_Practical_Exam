@@ -114,6 +114,8 @@ Also
 # Find FQDN
 ```
 nmap -p389 –sV -iL <target_list>  or nmap -p389 –sV <target_IP> (Find the FQDN in a subnet/network)
+nmap --script smb-os-discovery.nse -p445 127.0.0.1
+sudo nmap -sU -sS --script smb-os-discovery.nse -p U:137,T:139 127.0.0.1
 ```
 # Cracking Wi-Fi networks
 ```
@@ -127,6 +129,8 @@ aircrack-ng -a2 -b [Target BSSID] -w [password_Wordlist.txt] [WP2 PCAP file] (Fo
 Check RDP enabled after getting ip- nmap -p 3389 -iL ip.txt | grep open (ip.txt contains all the alive hosts from target subnet)
 Check MySQL service running- nmap -p 3306 -iL ip.txt | grep open        (ip.txt contains all the alive hosts from target subnet)
 hydra -L /root/Desktop/user.txt -P /root/Desktop/pass.txt 192.168.1.118 smb
+
+hydra -U cehck available module
 
 ```
 
@@ -622,8 +626,52 @@ computer name + domain name
 
 nmap -p389 -sV -iL targetlist.txt
 
+nmap -p 389 -T4 -A -v --script ldap-rootdse <target>
+nmap -p 445,139 --script smb-os-discovery <target_IP>
+nmap -p 1-65535 -sV <target_IP>
+
+nmap --script smb-os-discovery.nse -p445 127.0.0.1
+sudo nmap -sU -sS --script smb-os-discovery.nse -p U:137,T:139 127.0.0.1
+
+nmap -sC -sV -T4 -o -p- --min-rate=9326 -vv <target_IP>
+
+
+first try = enum4linux -a 10.10.10.4
+
+https://learn.microsoft.com/en-us/windows-server/get-started/windows-server-release-info
+
 
 * openvas 
 gvm-start
  openvasad -c add_user -u your_new_login_here -r Admin
  change - openvasmd --user=admin --new-password=letmein
+
+
+Service	Protocol	Port(s)	Description
+Mercury Mail Transport System (Mercury/32)	SMTP	25, 587, 465	Standard SMTP, submission, SMTP over SSL
+POP3	110, 995	Standard POP3, POP3 over SSL
+IMAP	143, 993	Standard IMAP, IMAP over SSL
+HTTP	80	Web-based management interface
+Mercury Interactive (HP)	LoadRunner	443	Controller
+LoadRunner	8080	Default agent port
+LoadRunner	8182	Data collector
+Quality Center	8080	HTTP
+Quality Center	8443	HTTPS
+QuickTest Professional (QTP/UFT)	Varies	Typically uses standard network ports for communication with QC and LR
+Mercury RPC	Dynamic	Varies	Depends on the application and configuration
+
+
+sudo nmap -p- 192.168.1.0/24 -oN subnet_scan_results.txt
+
+
+
+Service	Ports
+Mercury Mail (SMTP)	25, 587, 465
+Mercury Mail (POP3)	110, 995
+Mercury Mail (IMAP)	143, 993
+Mercury Mail (HTTP)	80
+LoadRunner Controller	443
+LoadRunner Agent	8080
+LoadRunner Data Collector	8182
+Quality Center HTTP	8080
+Quality Center HTTPS	8443
